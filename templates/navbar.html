@@ -1,0 +1,47 @@
+{% load static %}
+
+
+<nav class="w-full flex justify-between items-center py-2 px-3 fixed z-50">
+    <div class="w-6/12"> <!--divido em 6 para os dois, sendo que no total o espaço é 12-->
+        <!-- rounded-md deixa as pontas redondas -->
+        <a href='/'> <!-- joga sempre para pag inicial apos clicar na logo poe exem-->
+            <img class="w-2/12" src="{% static 'img/hashflix.png' %}">
+        </a>
+    </div>
+
+  
+    <div class="w-6/12 flex flex-nowrap justify-end">
+        {% if user.is_authenticated %}
+        <div class="mr-2"> <!-- margem right // flex é para colocar um do lado do outro e flex-nowrap para ele não ajustar  -->
+            <form method="get" action="{% url 'filme:pesquisafilme' %}"> {# Pesquisar não é post (mas dá pra fazer com post), ele apenas redireciona #}
+                <input type="text" class="py-1 px-2 rounded-md text-black" name="query" value="{{ request.GET.query }}" placeholder="Pesquisar...">
+                <input type="submit" value="">
+            </form>
+        </div>
+        {% endif %}
+
+        <div class="mr-2">
+        {% if user.is_authenticated %}
+            <a href="{% url 'filme:logout' %}">
+                <button class="bg-red-600 text-white py-1 px-3 rounded-md">Sair</button>
+                <!-- py é a distância da letra -->
+            </a>
+        {% else %}
+            <a href="{% url 'filme:login' %}">
+                <button class="bg-red-600 text-white py-1 px-3 rounded-md">Login</button>
+                <!-- py é a distância da letra -->
+            </a>
+            {% endif %}
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="mr-2 flex flex-nowrap justify-end">
+            <a href="{% url 'filme:editperfil' request.user.id %}"> <!-- Criar a view, a url para redirecionar e o template pelo id/pk autenticado -->
+                <button class="bg-red-600 text-white py-1 px-3 rounded-md">Editar Perfil</button>
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+   
+</nav>
